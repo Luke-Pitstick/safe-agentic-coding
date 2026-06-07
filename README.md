@@ -35,6 +35,33 @@ Each `SKILL.md` contains YAML frontmatter with `name` and `description`, followe
 | --- | --- |
 | `create-project` | Existing project scaffold skill updated to create `agents/`, `docs/`, and an `AGENTS.md` with gstack skill-routing guidance. |
 
+## Using `decompose-task` and `delegate-agent-task` Together
+
+These two skills are designed to work as a planning and execution pair.
+
+Use `decompose-task` first when the work is still broad, abstract, or too large for one agent pass. It turns the goal into agent-ready task cards and writes the plan to the current workspace's `agents/` folder, usually as `agents/subtasks.md`. Each card should include the outcome, scope, context packet, agent instructions, acceptance criteria, validation, dependencies, and handoff artifact.
+
+Then use `delegate-agent-task` to execute those cards. It reads the task plan, decides which subtasks can run in parallel, spawns or coordinates subagents where the host platform supports them, applies relevant validation skills, integrates results, and commits coherent checkpoints when appropriate.
+
+Typical flow:
+
+```text
+Use $decompose-task to break this project goal into agent-ready subtasks and write them to agents/subtasks.md.
+```
+
+Review the generated plan, then dispatch it:
+
+```text
+Use $delegate-agent-task to execute the task cards in agents/subtasks.md. Let implementation agents write code where the cards permit it, run appropriate validation, and commit coherent checkpoints.
+```
+
+Good handoff habits:
+
+- Keep `decompose-task` responsible for splitting work and making context explicit.
+- Keep `delegate-agent-task` responsible for execution, validation, integration, and commit cadence.
+- If a task involves common infrastructure or reusable technology, make sure the task card includes a `deep-dive` or `tech-discovery` step before custom implementation.
+- If a platform does not support subagents, use each task card as a manual prompt for a separate coding-agent session and bring the handoff artifacts back to the parent session.
+
 ## Repository Layout
 
 ```text
