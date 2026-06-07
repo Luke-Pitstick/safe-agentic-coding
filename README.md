@@ -1,6 +1,14 @@
-# Session Skills Pack
+# Safe Agentic Coding
 
-This repository bundles the skills created or materially updated during this Codex session.
+Safe Agentic Coding is a small workflow kit for making coding agents more useful without letting them drift. The skills here help an agent move from idea to scoped plan, from plan to delegated execution, and from implementation to validation, review, and cleanup.
+
+The point is not to make agents do more at random. It is to make them safer by giving them clear boundaries: decompose large work before executing it, write task cards into `agents/`, research existing tools before building custom code, validate changes with tests and reviews, commit coherent checkpoints, and keep project documentation in `docs/`.
+
+Together, the skills support a practical agentic coding loop:
+
+```text
+create project -> expand/decompose work -> research or simplify -> delegate implementation -> test/review -> clean up repo state
+```
 
 The skills use the Agent Skills folder format:
 
