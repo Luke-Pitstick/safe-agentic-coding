@@ -1,0 +1,4 @@
+interface:
+  display_name: "Update Gitignore"
+  short_description: "Find and untrack ignored files safely"
+  default_prompt: "Use $update-gitignore to audit this repo, update .gitignore, and untrack files that should be ignored."

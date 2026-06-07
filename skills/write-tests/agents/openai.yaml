@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write Tests"
+  short_description: "Add robust unit and integration tests"
+  default_prompt: "Use $write-tests to add robust tests for this code change."

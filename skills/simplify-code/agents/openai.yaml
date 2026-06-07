@@ -1,0 +1,4 @@
+interface:
+  display_name: "Simplify Code"
+  short_description: "Find lower-complexity code paths"
+  default_prompt: "Use $simplify-code to analyze this codebase for unnecessary complexity and suggest simpler equivalent implementations."

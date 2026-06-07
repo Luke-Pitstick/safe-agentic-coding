@@ -1,0 +1,4 @@
+interface:
+  display_name: "Expand Task"
+  short_description: "Turn prompts into narrow agent briefs"
+  default_prompt: "Use $expand-task to turn this prompt into a narrow implementation brief in agents/."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Project"
+  short_description: "Initialize a project and GitHub repo"
+  default_prompt: "Use $create-project to create a new GitHub-backed project named my-new-app."

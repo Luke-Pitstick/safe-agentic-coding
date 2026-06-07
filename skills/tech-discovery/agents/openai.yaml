@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tech Discovery"
+  short_description: "Find tech to bootstrap projects"
+  default_prompt: "Use $tech-discovery to find libraries, APIs, open source projects, and technologies that can help bootstrap this project idea."

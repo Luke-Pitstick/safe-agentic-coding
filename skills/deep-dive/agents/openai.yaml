@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deep Dive"
+  short_description: "Focused web research with sources"
+  default_prompt: "Use $deep-dive to investigate this question with focused internet searches."

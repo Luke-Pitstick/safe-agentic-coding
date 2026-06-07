@@ -1,0 +1,4 @@
+interface:
+  display_name: "Science Check"
+  short_description: "Ground ideas in real evidence"
+  default_prompt: "Use $science-check to test this idea against real science and technical evidence."

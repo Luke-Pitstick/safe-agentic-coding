@@ -1,0 +1,4 @@
+interface:
+  display_name: "Decompose Task"
+  short_description: "Split big tasks into agent-ready work"
+  default_prompt: "Use $decompose-task to turn this high-level goal into agent-ready subtasks."
