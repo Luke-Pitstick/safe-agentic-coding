@@ -35,6 +35,37 @@ Each `SKILL.md` contains YAML frontmatter with `name` and `description`, followe
 | --- | --- |
 | `create-project` | Existing project scaffold skill updated to create `agents/`, `docs/`, and an `AGENTS.md` with gstack skill-routing guidance. |
 
+## Using `create-project`
+
+Use `create-project` when you want an agent to start a new local project and matching GitHub repository from a project name. It is intentionally conservative: it asks for the project name if one is missing, asks whether the GitHub repository should be public or private, and avoids creating extra files beyond the scaffold unless the user asks for them.
+
+Typical prompt:
+
+```text
+Use $create-project to create a new project called my-app.
+```
+
+The skill creates this starter structure:
+
+```text
+my-app/
+├── .gitignore
+├── README.md
+├── AGENTS.md
+├── agents/
+└── docs/
+```
+
+File and folder purpose:
+
+- `.gitignore` starts the project with a place for ignored local, generated, and dependency files.
+- `README.md` starts with the project name and a short placeholder description.
+- `AGENTS.md` tells coding agents that agent configs belong in `agents/`, project documentation belongs in `docs/`, and gstack-style requests should route to matching skills before answering directly.
+- `agents/` is for agent configs, task plans, subtask files, handoff notes, and related agent artifacts.
+- `docs/` is for project documentation, specs, design notes, architecture notes, and decision records.
+
+After creating the scaffold, `create-project` initializes Git, commits the initial scaffold, creates the GitHub repository with the requested visibility, adds `origin`, and pushes the first commit.
+
 ## Using `decompose-task` and `delegate-agent-task` Together
 
 These two skills are designed to work as a planning and execution pair.
