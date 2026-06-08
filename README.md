@@ -7,7 +7,7 @@ The point is not to make agents do more at random. It is to make them safer by g
 Together, the skills support a practical agentic coding loop:
 
 ```text
-create project -> expand/decompose work -> research or simplify -> delegate implementation -> test/review -> clean up repo state
+create project -> expand/decompose work -> research or simplify -> delegate implementation -> debug with runtime evidence -> test/review -> clean up repo state
 ```
 
 The skills use the Agent Skills folder format:
@@ -33,6 +33,7 @@ Each `SKILL.md` contains YAML frontmatter with `name` and `description`, followe
 | `expand-task` | Expands a simple prompt into a narrow, app-aware implementation brief for another agent. |
 | `deep-dive` | Performs focused web research with sourced findings for startup, product, company, market, and technical questions. |
 | `science-check` | Tests ideas against scientific and technical evidence, separating claims, mechanisms, evidence quality, and uncertainty. |
+| `debug-runtime` | Debugs tricky bugs with temporary session-tagged instrumentation, runtime logs/backtraces, narrow fixes, verification, and cleanup. |
 | `update-gitignore` | Audits a repo, updates `.gitignore`, and untracks already-tracked ignored files without deleting local copies. |
 | `simplify-code` | Analyzes code complexity and finds simpler behavior-preserving implementations, including library/API alternatives via `$deep-dive`. |
 | `tech-discovery` | Researches technologies, libraries, APIs, open source projects, standards, datasets, and platforms that can bootstrap a project idea. |
@@ -101,6 +102,27 @@ Good handoff habits:
 - If a task involves common infrastructure or reusable technology, make sure the task card includes a `deep-dive` or `tech-discovery` step before custom implementation.
 - If a platform does not support subagents, use each task card as a manual prompt for a separate coding-agent session and bring the handoff artifacts back to the parent session.
 
+## Using `debug-runtime`
+
+Use `debug-runtime` when a bug is hard to understand from code inspection alone. It is modeled after a Cursor-style debug loop: form hypotheses, add temporary identifiable runtime logs, reproduce the bug, use the logs or backtraces to pick a root cause, make the smallest fix, verify it, and remove the instrumentation before handoff.
+
+Typical prompt:
+
+```text
+Use $debug-runtime to investigate this flaky checkout bug. Add temporary logs if needed, collect runtime evidence, fix it narrowly, and remove the instrumentation before finishing.
+```
+
+The skill is safer than guess-and-edit debugging because it requires:
+
+- A unique `DEBUG_RUNTIME_<date>_<slug>` marker on temporary instrumentation so every debug log can be found and removed.
+- Explicit hypotheses before adding logs.
+- Sanitized logs that avoid secrets, tokens, credentials, raw user payloads, and sensitive PII.
+- Runtime evidence before patching unless an existing failing test or stack trace already proves the cause.
+- Verification after cleanup, not only while debug logs are still present.
+- No committed instrumentation unless the user explicitly asks for durable production logging.
+
+It pairs naturally with `write-tests` when the fix should become a regression test, and with `simplify-code` when runtime evidence shows confusing structure caused the bug.
+
 ## Repository Layout
 
 ```text
@@ -108,6 +130,7 @@ session-skills/
 ├── README.md
 └── skills/
     ├── create-project/
+    ├── debug-runtime/
     ├── decompose-task/
     ├── deep-dive/
     ├── delegate-agent-task/
@@ -326,6 +349,7 @@ Key routing rules:
 - Expand a small prompt into an implementation brief -> `expand-task`
 - Focused web research -> `deep-dive`
 - Scientific or technical grounding -> `science-check`
+- Runtime-first bug debugging -> `debug-runtime`
 - Clean ignored files -> `update-gitignore`
 - Reduce code complexity -> `simplify-code`
 - Find reusable technologies for a project -> `tech-discovery`

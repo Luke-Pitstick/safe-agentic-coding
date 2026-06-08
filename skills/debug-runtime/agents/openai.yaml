@@ -1,0 +1,4 @@
+interface:
+  display_name: "Debug Runtime"
+  short_description: "Debug bugs with runtime evidence"
+  default_prompt: "Use $debug-runtime to instrument this bug with temporary logs, collect runtime evidence, fix it narrowly, and remove the instrumentation."
