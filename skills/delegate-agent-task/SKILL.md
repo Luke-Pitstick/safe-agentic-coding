@@ -33,6 +33,8 @@ Invocation of this skill is explicit permission to use subagents for the task, u
 - Tell code-editing agents they are not alone in the codebase and must not revert unrelated changes.
 - Commit regularly when working in a Git repository: after a coherent subtask is complete, validated, and scoped to owned files.
 - Wait only when the result is needed for integration or final reporting.
+- Poll running agents in a coordination loop instead of interrupting them for routine status.
+- Require every worker to emit a clear final handoff message when done, blocked, failed, or waiting on another subagent.
 - Review returned work before treating it as complete.
 - Run relevant review, QA, and design-review skills as gates around delegated work when those skills are available.
 - Close agents when their output has been integrated or no longer matters.
@@ -126,6 +128,7 @@ For each spawned agent, pass a full prompt that includes:
 - Relevant skills to invoke, if any
 - Required artifacts
 - Validation expectations
+- Completion signal and dependency rules
 - Return format
 - Warning not to revert unrelated changes
 
@@ -168,6 +171,30 @@ After spawning, do useful non-overlapping work immediately:
 
 Do not redo delegated work unless the subagent fails or returns unusable output.
 
+### Step 5.5: Poll Workers Without Interrupting
+
+Run a lightweight coordination loop while any subagent is active:
+
+1. Poll each running worker at regular intervals using the available wait/status primitive.
+2. Update the dispatch board with: running, waiting-on-task, blocked, complete, partial, failed, or needs-parent-input.
+3. Do not send routine "are you done?" messages. Let workers continue uninterrupted until they emit their final handoff or an explicit blocker message.
+4. If a worker reports that it is blocked by another subagent, record the dependency in the dispatch board and keep polling both agents.
+5. If a dependency unblocks, send the minimum necessary handoff artifact to the blocked worker and let it resume.
+6. Interrupt with `send_input` only when the worker asks for parent input, is narrowly stuck, needs another worker's completed artifact, or returned a fixable incomplete result.
+7. Prefer keeping dependent workers alive in a waiting state over closing and respawning them when they need another subagent's output.
+
+Require workers to end with a final completion signal in their return message:
+
+```text
+FINAL HANDOFF
+Task ID: <id>
+Status: complete | partial | blocked | failed
+Blocks/depends on: <none or task/agent/artifact>
+Ready for integration: yes | no
+```
+
+The parent agent should treat this signal as the worker's done/blocked notification and should not need to interrupt the worker to discover normal completion.
+
 ### Step 6: Integrate Results
 
 Wait for agents when their results are needed. For each returned result:
@@ -178,6 +205,7 @@ Wait for agents when their results are needed. For each returned result:
 - Run applicable review gates from "Skill Routing Gates".
 - Identify conflicts, duplicate work, or missing handoffs.
 - Ask the same agent for a fix with `send_input` if the gap is narrow and context-specific.
+- Send dependent handoff artifacts to waiting workers before integrating locally when that lets the original worker finish its assigned task.
 - Fix integration issues locally when they cross task boundaries.
 - Commit the accepted result when it is coherent, validated, and safe to stage without unrelated changes.
 

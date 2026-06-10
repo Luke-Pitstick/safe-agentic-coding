@@ -39,8 +39,18 @@ Instructions:
 3. Expand the task only when the expansion is required to satisfy acceptance criteria.
 4. Record any child tasks instead of silently broadening scope.
 5. Validate the result using the task card's validation method.
+6. If blocked by another subagent's work, emit a blocker message naming the task, agent, or artifact you need, then wait for the parent to send that handoff. Do not broaden scope to bypass the dependency.
+7. When complete, partial, blocked, or failed, emit the final handoff block exactly once so the parent can detect completion without interrupting you.
 
 Return:
+- Start with this final handoff block:
+  ```text
+  FINAL HANDOFF
+  Task ID: <id>
+  Status: complete | partial | blocked | failed
+  Blocks/depends on: <none or task/agent/artifact>
+  Ready for integration: yes | no
+  ```
 - Task ID and status: complete, partial, blocked, or failed
 - Files or artifacts changed
 - Commit hash and message, or "not committed" with reason
@@ -90,6 +100,10 @@ Review instructions:
 
 - Wait immediately only for critical-path results.
 - Keep working locally while sidecar agents run.
-- Wait for all relevant agents before final integration.
+- Poll running agents in a loop and update the dispatch board instead of sending routine status-check messages.
+- Treat each worker's `FINAL HANDOFF` block as its completion or blocker signal.
+- If a worker is blocked by another subagent, keep it alive, record the dependency, and send the completed dependency artifact when available.
+- Interrupt a worker only for explicit parent input requests, dependency handoffs, narrow repair requests, or returned incomplete work that the same worker can fix.
+- Wait for all relevant agents or final handoff blocks before final integration.
 - Prefer asking the original agent to repair narrow gaps.
 - Prefer local integration for cross-task conflicts.
