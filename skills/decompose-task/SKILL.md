@@ -85,8 +85,10 @@ Write the full decomposition as a Markdown file in the current workspace:
 - Resolve the workspace root with `git rev-parse --show-toplevel` when inside a Git repo; otherwise use the current working directory.
 - Use `<workspace-root>/agents/` as the default destination.
 - Create `agents/` if it does not exist.
-- Use `agents/subtasks.md` when it is clearly the active task plan for the workspace.
-- If `agents/subtasks.md` already exists and appears unrelated, create `agents/<goal-slug>-subtasks.md` instead to avoid overwriting useful work.
+- Name the file after the task instead of using a generic `subtasks.md` filename.
+- Derive a concise lowercase slug from the goal, using hyphens for spaces and removing punctuation, then write `agents/<goal-slug>-subtasks.md`.
+- Keep the slug specific enough to recognize the task later, such as `checkout-refactor-subtasks.md`, `billing-retry-qa-subtasks.md`, or `mobile-onboarding-redesign-subtasks.md`.
+- If the derived filename already exists, inspect it. Append a short disambiguator such as `-v2`, a subsystem name, or a date only when the existing file is for a different or stale plan.
 - If the user names a specific file, use that path instead.
 - If the user asks for no files, emit the plan in chat only.
 
