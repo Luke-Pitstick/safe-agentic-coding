@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write Docstrings"
+  short_description: "Add docstrings and API comments to code"
+  default_prompt: "Use $write-docstrings to add clear docstrings to the specified files."
