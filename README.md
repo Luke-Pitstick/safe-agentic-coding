@@ -28,7 +28,7 @@ Each `SKILL.md` contains YAML frontmatter with `name` and `description`, followe
 | Skill | Purpose |
 | --- | --- |
 | `decompose-task` | Splits high-level goals into agent-ready subtasks written to `agents/`, including context packets, dependencies, validation, and reuse/library checks. |
-| `delegate-agent-task` | Coordinates subagents to execute task cards, including code-writing permissions, validation gates, and regular commit checkpoints. |
+| `delegate-agent-tasks` | Coordinates subagents to execute task cards, including code-writing permissions, validation gates, and regular commit checkpoints. |
 | `write-tests` | Designs and writes robust unit, integration, regression, contract, and workflow tests. |
 | `expand-task` | Expands a simple prompt into a narrow, app-aware implementation brief for another agent. |
 | `deep-dive` | Performs focused web research with sourced findings for startup, product, company, market, and technical questions. |
@@ -75,13 +75,13 @@ File and folder purpose:
 
 After creating the scaffold, `create-project` initializes Git, commits the initial scaffold, creates the GitHub repository with the requested visibility, adds `origin`, and pushes the first commit.
 
-## Using `decompose-task` and `delegate-agent-task` Together
+## Using `decompose-task` and `delegate-agent-tasks` Together
 
 These two skills are designed to work as a planning and execution pair.
 
 Use `decompose-task` first when the work is still broad, abstract, or too large for one agent pass. It turns the goal into agent-ready task cards and writes the plan to the current workspace's `agents/` folder, usually as `agents/subtasks.md`. Each card should include the outcome, scope, context packet, agent instructions, acceptance criteria, validation, dependencies, and handoff artifact.
 
-Then use `delegate-agent-task` to execute those cards. It reads the task plan, decides which subtasks can run in parallel, spawns or coordinates subagents where the host platform supports them, applies relevant validation skills, integrates results, and commits coherent checkpoints when appropriate.
+Then use `delegate-agent-tasks` to execute those cards. It reads the task plan, decides which subtasks can run in parallel, spawns or coordinates subagents where the host platform supports them, applies relevant validation skills, integrates results, and commits coherent checkpoints when appropriate.
 
 Typical flow:
 
@@ -92,13 +92,13 @@ Use $decompose-task to break this project goal into agent-ready subtasks and wri
 Review the generated plan, then dispatch it:
 
 ```text
-Use $delegate-agent-task to execute the task cards in agents/subtasks.md. Let implementation agents write code where the cards permit it, run appropriate validation, and commit coherent checkpoints.
+Use $delegate-agent-tasks to execute the task cards in agents/subtasks.md. Let implementation agents write code where the cards permit it, run appropriate validation, and commit coherent checkpoints.
 ```
 
 Good handoff habits:
 
 - Keep `decompose-task` responsible for splitting work and making context explicit.
-- Keep `delegate-agent-task` responsible for execution, validation, integration, and commit cadence.
+- Keep `delegate-agent-tasks` responsible for execution, validation, integration, and commit cadence.
 - If a task involves common infrastructure or reusable technology, make sure the task card includes a `deep-dive` or `tech-discovery` step before custom implementation.
 - If a platform does not support subagents, use each task card as a manual prompt for a separate coding-agent session and bring the handoff artifacts back to the parent session.
 
@@ -133,7 +133,7 @@ session-skills/
     ├── debug-runtime/
     ├── decompose-task/
     ├── deep-dive/
-    ├── delegate-agent-task/
+    ├── delegate-agent-tasks/
     ├── expand-task/
     ├── science-check/
     ├── simplify-code/
@@ -344,7 +344,7 @@ When the user's request matches an available skill, route to that skill and foll
 
 Key routing rules:
 - Break down broad work -> `decompose-task`
-- Dispatch subagents -> `delegate-agent-task`
+- Dispatch subagents -> `delegate-agent-tasks`
 - Write or improve tests -> `write-tests`
 - Expand a small prompt into an implementation brief -> `expand-task`
 - Focused web research -> `deep-dive`
@@ -368,6 +368,6 @@ Repeat for each skill you modify.
 ## Notes
 
 - Skills that mention `$deep-dive` assume the `deep-dive` skill is installed alongside them.
-- `delegate-agent-task` assumes the host agent has access to subagent/thread tools. If a platform does not support subagents, use its dispatch templates as manual task prompts.
+- `delegate-agent-tasks` assumes the host agent has access to subagent/thread tools. If a platform does not support subagents, use its dispatch templates as manual task prompts.
 - `agents/openai.yaml` is Codex UI metadata. Other platforms can ignore it.
 - References under `references/` are intentionally loaded only when needed; do not inline everything into global rules unless your platform lacks file-aware context.

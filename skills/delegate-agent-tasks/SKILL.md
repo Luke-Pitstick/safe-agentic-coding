@@ -1,9 +1,9 @@
 ---
-name: delegate-agent-task
+name: delegate-agent-tasks
 description: Delegate agent-ready tasks to Codex subagents and coordinate execution, validation, GStack review gates, QA, design review, and final integration. Use when the user asks Codex to delegate work, spawn subagents, run subtasks, parallelize a plan, execute task cards from decompose-task, run GStack review skills, run qa/design-review/review gates, coordinate multiple agents, or integrate outputs from delegated agent work.
 ---
 
-# Delegate Agent Task
+# Delegate Agent Tasks
 
 ## Overview
 

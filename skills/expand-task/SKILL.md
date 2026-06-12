@@ -9,7 +9,7 @@ description: Expand a simple task, prompt, rough idea, or one-line feature reque
 
 Turn a small prompt into one narrow, delegate-ready implementation brief. The output should explain why the task matters, how it fits the app, what the technical plan is, what is out of scope, and how another agent should validate completion.
 
-This skill does not implement the task and does not spawn subagents. It writes the final brief to the current workspace's `agents/` folder for use by `$delegate-agent-task` or another follow-up skill.
+This skill does not implement the task and does not spawn subagents. It writes the final brief to the current workspace's `agents/` folder for use by `$delegate-agent-tasks` or another follow-up skill.
 
 ## Operating Rules
 
@@ -90,7 +90,7 @@ Respond with:
 
 - Artifact path.
 - One-sentence narrow scope.
-- Suggested next command, usually `$delegate-agent-task` with the new brief.
+- Suggested next command, usually `$delegate-agent-tasks` with the new brief.
 - Any assumptions or blockers that remain.
 
 Do not paste the full artifact unless the user asks.
@@ -105,7 +105,7 @@ Before finalizing, check:
 - Out-of-scope items are explicit.
 - Acceptance criteria and validation steps are testable.
 - The artifact was written under `agents/` or the user explicitly requested another path.
-- The brief can be used directly by `$delegate-agent-task`.
+- The brief can be used directly by `$delegate-agent-tasks`.
 
 ## Anti-Patterns
 

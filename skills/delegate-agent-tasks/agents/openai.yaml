@@ -1,0 +1,4 @@
+interface:
+  display_name: "Delegate Agent Tasks"
+  short_description: "Delegate tasks with review and QA gates"
+  default_prompt: "Use $delegate-agent-tasks to spawn subagents for these task cards and integrate their results."

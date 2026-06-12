@@ -9,7 +9,7 @@ description: Split large, vague, or high-level goals into agent-ready subtasks w
 
 Turn broad intent into a small portfolio of executable task cards. Each task card must be clear enough for another agent to start, investigate, expand, and complete without relying on hidden conversation context.
 
-Use `$delegate-agent-task` after this skill when the user wants Codex to spawn subagents that execute the task cards and integrate their results.
+Use `$delegate-agent-tasks` after this skill when the user wants Codex to spawn subagents that execute the task cards and integrate their results.
 
 ## Operating Rules
 
@@ -127,7 +127,7 @@ When a subtask asks an agent to build common infrastructure, add a line such as:
 
 After writing the file, summarize the path and the critical path in chat. Do not paste the entire file unless the user asks.
 
-If the user asks to execute the plan with agents, invoke `$delegate-agent-task` with the emitted task cards rather than spawning subagents from this skill directly.
+If the user asks to execute the plan with agents, invoke `$delegate-agent-tasks` with the emitted task cards rather than spawning subagents from this skill directly.
 
 ## Quality Bar
 
