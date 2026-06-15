@@ -5,6 +5,14 @@ description: Create a new local project directory and GitHub repository from a u
 
 # Create Project
 
+## Optional GStack and GBrain Compatibility
+
+When creating `AGENTS.md`, include Safe Agentic Coding and GStack routing guidance that works with or without gbrain.
+
+If the user asks for gbrain setup while creating the project, do not invent credentials or run remote setup blindly. Give them the setup commands and ask for any required visibility, token, or remote decisions before executing.
+
+The generated project should treat `agents/` and `docs/` as the source of truth. If gbrain is later enabled, it is optional memory/search over durable artifacts, not a replacement for project files.
+
 ## Workflow
 
 Use the user-provided project name as both the local directory name and GitHub repository name.
@@ -42,6 +50,16 @@ DO NOT CREATE ANY FILES OR FOLDERS OTHER THAN THE ONES SPECIFIED IN THE STEPS BE
 Agent configs and related files live in `agents/`.
 
 Project documentation lives in `docs/`.
+
+## Optional memory
+
+If GStack/gbrain is installed, agents may use it as optional memory:
+- Search relevant prior context before planning: `gbrain search "<keywords>"`.
+- Read only the few relevant pages needed for the task.
+- Save compact summaries of durable plans, research, reviews, debug findings, and handoffs under `safe-agentic/...`.
+- Keep project files in `agents/` and `docs/` as the source of truth.
+- Never save secrets, credentials, raw user payloads, private keys, sensitive PII, or large code dumps to memory.
+- Continue normally when `gbrain` is unavailable.
 
 ## Skill routing
 

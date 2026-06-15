@@ -11,6 +11,26 @@ Use this skill to turn a project idea into a practical map of reusable technolog
 
 This is not generic market research. The output should help an agent or engineer decide what to adopt, fork, integrate, study, or reject.
 
+## Optional GStack and GBrain Compatibility
+
+Use GStack and gbrain as optional memory, never as a required dependency.
+
+Before researching, if `gbrain` is on PATH:
+
+- Extract 2-4 concrete keywords from the project idea, capability lane, product area, or repo name.
+- Run `gbrain search "<keywords>"`.
+- Read at most the top 3 clearly relevant pages with `gbrain get_page "<slug>"`.
+- Use memory to find prior decisions, rejected libraries, known constraints, or earlier research.
+- If `gbrain` is unavailable, returns an error, or has no useful hits, continue with web and local research.
+
+After producing a durable adoption map, save a compact summary when `gbrain` is available:
+
+```bash
+gbrain put "safe-agentic/research/<topic-slug>" --content "<markdown summary>"
+```
+
+The saved summary should include the question, recommended stack, rejected options, source links, and next spikes. Do not save secrets, credentials, raw user payloads, private keys, sensitive PII, or full copied source material. The project-local or chat artifact remains the source of truth.
+
 ## Operating Rules
 
 - Use internet search by default. Technology availability, maintenance, docs, pricing, and API terms change often.

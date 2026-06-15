@@ -9,6 +9,26 @@ description: Add, improve, or audit verbose docstrings and equivalent API docume
 
 Add useful, moderately verbose documentation comments to source code while preserving behavior. Treat "docstrings" broadly: use the language's idiomatic equivalent for modules, packages, classes, functions, methods, components, types, interfaces, exported constants, and public APIs.
 
+## Optional GStack and GBrain Compatibility
+
+Use GStack and gbrain as optional memory, never as a required dependency.
+
+Before documenting, if `gbrain` is on PATH:
+
+- Extract 2-4 concrete keywords from the target module, API, package, or feature area.
+- Run `gbrain search "<keywords>"`.
+- Read at most the top 3 clearly relevant pages with `gbrain get_page "<slug>"`.
+- Use memory only for public API decisions, domain terms, prior docs guidance, or known invariants.
+- If `gbrain` is unavailable, returns an error, or has no useful hits, continue from local code and docs.
+
+After substantial documentation work, save a compact summary when `gbrain` is available:
+
+```bash
+gbrain put "safe-agentic/reviews/<docstrings-slug>" --content "<markdown summary>"
+```
+
+The saved summary should include documented APIs, conventions followed, validation run, and remaining docs gaps. Do not save secrets, credentials, raw user payloads, private keys, sensitive PII, or large code dumps. The source files remain the source of truth.
+
 ## Workflow
 
 1. Determine scope.

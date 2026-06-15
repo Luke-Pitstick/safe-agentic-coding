@@ -11,6 +11,26 @@ Stress-test an idea against scientific and technical reality. Convert the idea i
 
 Use internet search when the claim depends on current science, recent papers, products, standards, safety, medicine, law, technical specs, or any external evidence that may have changed.
 
+## Optional GStack and GBrain Compatibility
+
+Use GStack and gbrain as optional memory, never as a required dependency.
+
+Before checking evidence, if `gbrain` is on PATH:
+
+- Extract 2-4 concrete keywords from the claim, mechanism, domain, or technology.
+- Run `gbrain search "<keywords>"`.
+- Read at most the top 3 clearly relevant pages with `gbrain get_page "<slug>"`.
+- Use memory only for prior evidence reviews, known caveats, source trails, or unresolved questions.
+- If `gbrain` is unavailable, returns an error, or has no useful hits, continue with live source review.
+
+After producing a durable evidence check, save a compact summary when `gbrain` is available:
+
+```bash
+gbrain put "safe-agentic/research/<claim-slug>" --content "<markdown summary>"
+```
+
+The saved summary should include the claim, evidence grade, strongest evidence, uncertainty, and practical implication. Do not save secrets, credentials, raw user payloads, private keys, sensitive PII, or full copied papers/articles. The project-local or chat artifact remains the source of truth.
+
 ## Operating Rules
 
 - Break ideas into testable claims before judging them.

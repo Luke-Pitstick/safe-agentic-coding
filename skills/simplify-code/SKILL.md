@@ -9,6 +9,26 @@ description: Analyze code complexity and identify simpler behavior-preserving wa
 
 Use this skill to find where code is more complicated than the problem requires, then recommend or implement simpler equivalent designs. Prefer evidence from the codebase, tests, call sites, and runtime behavior over broad style opinions.
 
+## Optional GStack and GBrain Compatibility
+
+Use GStack and gbrain as optional memory, never as a required dependency.
+
+Before simplifying, if `gbrain` is on PATH:
+
+- Extract 2-4 concrete keywords from the target files, modules, feature area, or complexity concern.
+- Run `gbrain search "<keywords>"`.
+- Read at most the top 3 clearly relevant pages with `gbrain get_page "<slug>"`.
+- Use memory only for prior refactor decisions, known regressions, dependency research, or fragile code areas.
+- If `gbrain` is unavailable, returns an error, or has no useful hits, continue from local code, tests, and call sites.
+
+After producing a durable complexity review or accepted simplification, save a compact summary when `gbrain` is available:
+
+```bash
+gbrain put "safe-agentic/reviews/<simplification-slug>" --content "<markdown summary>"
+```
+
+The saved summary should include the hotspot, simpler equivalent, adopted or rejected libraries, validation, and remaining complexity. Do not save secrets, credentials, raw user payloads, private keys, sensitive PII, or large code dumps. The local artifact and Git diff remain the source of truth.
+
 ## Operating Modes
 
 - **Analysis mode**: Default when the user asks for a complexity review, audit, or recommendations. Produce ranked findings with file/line references and concrete simplification options.

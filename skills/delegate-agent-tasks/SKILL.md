@@ -9,6 +9,26 @@ description: Delegate agent-ready tasks to Codex subagents and coordinate execut
 
 Execute a task-card portfolio by spawning Codex subagents for independent work and integrating their results. Use this after a decomposition exists, especially from `$decompose-task`, or when the user already provides task cards.
 
+## Optional GStack and GBrain Compatibility
+
+Use GStack and gbrain as optional coordination memory, never as a required dependency.
+
+Before dispatch, if `gbrain` is on PATH:
+
+- Extract 2-4 concrete keywords from the task portfolio, such as task IDs, feature names, module names, or bug names.
+- Run `gbrain search "<keywords>"`.
+- Read at most the top 3 clearly relevant pages with `gbrain get_page "<slug>"`.
+- Attach relevant memory findings to subagent prompts only when they reduce repeated work, clarify prior decisions, or reveal known risks.
+- If `gbrain` is unavailable, returns an error, or has no useful hits, continue from task cards and local artifacts.
+
+After integration, save a compact handoff when `gbrain` is available:
+
+```bash
+gbrain put "safe-agentic/handoffs/<task-or-goal-slug>" --content "<markdown summary>"
+```
+
+The saved summary should include completed task IDs, artifact paths, commits created, validation gates run, skipped gates with reasons, and remaining risks. Do not save secrets, credentials, raw user payloads, private keys, sensitive PII, or large diffs. The project-local `agents/` artifacts and Git history remain the source of truth.
+
 ## Tool Setup
 
 Use Codex subagent tools when available:
@@ -122,6 +142,7 @@ For each spawned agent, pass a full prompt that includes:
 
 - Parent goal
 - Task card
+- Relevant gbrain context, if available and source-linked
 - Owned files or read-only boundary
 - Whether the agent may edit files, and exactly which files/directories/modules it owns if edits are allowed
 - Commit instructions: when to commit, what message shape to use, and whether to leave changes unstaged instead

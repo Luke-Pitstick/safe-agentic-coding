@@ -102,6 +102,116 @@ Good handoff habits:
 - If a task involves common infrastructure or reusable technology, make sure the task card includes a `deep-dive` or `tech-discovery` step before custom implementation.
 - If a platform does not support subagents, use each task card as a manual prompt for a separate coding-agent session and bring the handoff artifacts back to the parent session.
 
+## GStack and GBrain Compatibility
+
+These skills are now designed to cooperate with GStack and gbrain when they are available, while still working from plain project files when they are not.
+
+The source of truth stays simple:
+
+```text
+agents/   -> task cards, briefs, handoffs, reviews, debug notes
+docs/     -> specs, architecture notes, research, decisions
+gbrain    -> optional memory/search over compact summaries
+```
+
+When `gbrain` is on PATH, the skills use it in a lightweight way:
+
+- Before work, extract 2-4 concrete keywords and run `gbrain search "<keywords>"`.
+- Read only the top few relevant pages with `gbrain get_page "<slug>"`.
+- Use retrieved memory to avoid repeated work, honor prior decisions, and surface known risks.
+- After durable work, save a compact summary under `safe-agentic/...` with `gbrain put`.
+- Continue normally when gbrain is missing, empty, or temporarily unavailable.
+
+The skills do not save secrets, credentials, raw user payloads, private keys, sensitive PII, large code dumps, or full logs to gbrain. Project files and Git history remain authoritative.
+
+The default namespaces are:
+
+```text
+safe-agentic/tasks/<slug>
+safe-agentic/briefs/<slug>
+safe-agentic/research/<slug>
+safe-agentic/reviews/<slug>
+safe-agentic/debug/<slug>
+safe-agentic/handoffs/<slug>
+```
+
+## Set Up GBrain for Any Repo
+
+From a repo where GStack is installed or available to Codex, use the GStack setup skill:
+
+```text
+Use $setup-gbrain to set up gbrain for this repo.
+```
+
+That setup flow is responsible for installing or verifying the `gbrain` CLI, initializing a local brain such as PGLite or a supported remote backend, registering the MCP integration when needed, and setting the trust policy for the endpoint.
+
+After setup, verify from the repo:
+
+```sh
+gbrain doctor --fast --json
+gbrain search "<repo or feature keyword>"
+```
+
+Then save and retrieve a tiny test page:
+
+```sh
+cat > /tmp/gbrain-setup-check.md <<'EOF'
+---
+title: Setup Check
+tags: [safe-agentic, setup-check]
+---
+GBrain can save and retrieve Safe Agentic Coding summaries for this repo.
+EOF
+
+gbrain put "safe-agentic/test/setup-check" --content "$(cat /tmp/gbrain-setup-check.md)"
+
+gbrain get "safe-agentic/test/setup-check"
+gbrain search "setup-check"
+```
+
+To make a repo friendly to both GStack and Safe Agentic Coding, keep this structure:
+
+```text
+AGENTS.md
+agents/
+docs/
+```
+
+Add or keep this rule in `AGENTS.md`:
+
+```markdown
+## Optional memory
+
+If GStack/gbrain is installed, agents may use it as optional memory:
+- Search relevant prior context before planning: `gbrain search "<keywords>"`.
+- Read only the few relevant pages needed for the task.
+- Save compact summaries of durable plans, research, reviews, debug findings, and handoffs under `safe-agentic/...`.
+- Keep project files in `agents/` and `docs/` as the source of truth.
+- Never save secrets, credentials, raw user payloads, private keys, sensitive PII, or large code dumps to memory.
+- Continue normally when `gbrain` is unavailable.
+```
+
+For cross-machine artifacts memory, use GStack's artifacts sync after local gbrain works. Newer GStack versions use `gstack-artifacts-init`; older docs may call the same idea `gstack-brain-init`.
+
+```sh
+gstack-artifacts-init
+gstack-brain-sync --status
+```
+
+For repo code indexing, run the GStack sync skill from the repo:
+
+```text
+Use $sync-gbrain to sync this repo with gbrain.
+```
+
+Choose the conservative privacy mode first unless you know you want broader sync:
+
+- `off`: nothing syncs.
+- `artifacts-only`: plans, designs, retros, learnings, and reviews sync.
+- `full`: everything in GStack's allowlist syncs, including behavioral state.
+
+GStack's sync is allowlist-based and scans for credential-shaped content before pushing, but you should still treat gbrain summaries as durable memory: compact, useful, source-linked, and sanitized.
+
 ## Using `debug-runtime`
 
 Use `debug-runtime` when a bug is hard to understand from code inspection alone. It is modeled after a Cursor-style debug loop: form hypotheses, add temporary identifiable runtime logs, reproduce the bug, use the logs or backtraces to pick a root cause, make the smallest fix, verify it, and remove the instrumentation before handoff.

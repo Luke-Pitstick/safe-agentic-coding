@@ -9,6 +9,26 @@ description: Perform focused internet deep dives for a user-provided question, s
 
 Answer a scoped research question with targeted internet searches and source-backed synthesis. This skill is intentionally narrower than open-ended research: search for the specific evidence the user asked for, do enough follow-up to avoid obvious misses, then stop with a clear answer and links.
 
+## Optional GStack and GBrain Compatibility
+
+Use GStack and gbrain as optional memory, never as a required dependency.
+
+Before researching, if `gbrain` is on PATH:
+
+- Extract 2-4 concrete keywords from the prompt, market, company, product, or technical area.
+- Run `gbrain search "<keywords>"`.
+- Read at most the top 3 clearly relevant pages with `gbrain get_page "<slug>"`.
+- Use memory to find prior research, known constraints, previous decisions, or already-rejected options.
+- If `gbrain` is unavailable, returns an error, or has no useful hits, continue with live research and local artifacts.
+
+After producing a durable finding, save a compact summary when `gbrain` is available:
+
+```bash
+gbrain put "safe-agentic/research/<topic-slug>" --content "<markdown summary>"
+```
+
+The saved summary should include the question, answer, strongest sources, caveats, and next checks. Do not save secrets, credentials, raw user payloads, private keys, sensitive PII, or full copied source material. The project-local or chat artifact remains the source of truth.
+
 ## Operating Rules
 
 - Use internet search by default. The skill's purpose is current external evidence.

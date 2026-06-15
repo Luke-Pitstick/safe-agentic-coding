@@ -9,6 +9,26 @@ description: Add, improve, debug, and validate unit tests, integration tests, en
 
 Write tests that protect behavior users and maintainers care about. Prefer the repository's existing test framework, conventions, helpers, and command structure over introducing new tools.
 
+## Optional GStack and GBrain Compatibility
+
+Use GStack and gbrain as optional memory, never as a required dependency.
+
+Before writing tests, if `gbrain` is on PATH:
+
+- Extract 2-4 concrete keywords from the code under test, bug name, feature area, or test framework.
+- Run `gbrain search "<keywords>"`.
+- Read at most the top 3 clearly relevant pages with `gbrain get_page "<slug>"`.
+- Use memory only for known test commands, previous flakes, fixture conventions, bug regressions, or coverage gaps.
+- If `gbrain` is unavailable, returns an error, or has no useful hits, continue from local code and tests.
+
+After adding or improving meaningful tests, save a compact testing summary when `gbrain` is available:
+
+```bash
+gbrain put "safe-agentic/reviews/<test-slug>" --content "<markdown summary>"
+```
+
+The saved summary should include behaviors covered, files changed, commands run, results, and residual risk. Do not save secrets, credentials, raw user payloads, private keys, sensitive PII, or large test logs. The local tests and review artifacts remain the source of truth.
+
 ## Operating Rules
 
 - Inspect the code under test and nearby tests before writing new tests.

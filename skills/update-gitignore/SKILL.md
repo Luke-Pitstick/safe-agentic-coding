@@ -9,6 +9,26 @@ description: Audit a Git repository's current files, generated artifacts, local 
 
 Use this skill to make `.gitignore` match the actual repo: inspect the working tree, identify files that should not be versioned, add safe ignore patterns, then remove already-tracked ignored files from Git with `git rm --cached` while preserving local copies.
 
+## Optional GStack and GBrain Compatibility
+
+Use GStack and gbrain as optional memory, never as a required dependency.
+
+Before auditing, if `gbrain` is on PATH:
+
+- Extract 2-4 concrete keywords from the repo name, stack, generated folders, or tooling.
+- Run `gbrain search "<keywords>"`.
+- Read at most the top 3 clearly relevant pages with `gbrain get_page "<slug>"`.
+- Use memory only for known local-only files, prior ignore decisions, generated paths, or secret-scan warnings.
+- If `gbrain` is unavailable, returns an error, or has no useful hits, continue from the repo files and Git status.
+
+After updating `.gitignore` or untracking files, save a compact summary when `gbrain` is available:
+
+```bash
+gbrain put "safe-agentic/reviews/<repo-slug>-gitignore" --content "<markdown summary>"
+```
+
+The saved summary should include patterns added, files untracked, commands run, and remaining risks. Do not save secrets, credentials, raw user payloads, private keys, sensitive PII, or ignored file contents. The `.gitignore` and Git history remain the source of truth.
+
 ## Safety Rules
 
 - Work only inside a Git repo. Start with `git rev-parse --show-toplevel` and operate from that root.

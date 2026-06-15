@@ -11,6 +11,26 @@ Turn broad intent into a small portfolio of executable task cards. Each task car
 
 Use `$delegate-agent-tasks` after this skill when the user wants Codex to spawn subagents that execute the task cards and integrate their results.
 
+## Optional GStack and GBrain Compatibility
+
+Use GStack and gbrain as optional memory, never as a required dependency.
+
+Before decomposing, if `gbrain` is on PATH:
+
+- Extract 2-4 concrete keywords from the goal, such as feature names, error names, module names, or product areas.
+- Run `gbrain search "<keywords>"`.
+- Read at most the top 3 clearly relevant pages with `gbrain get_page "<slug>"`.
+- Use only source-linked context that helps scope tasks, identify prior decisions, or avoid repeated work.
+- If `gbrain` is unavailable, returns an error, or has no useful hits, continue from local workspace files.
+
+After writing the decomposition, save a compact summary when `gbrain` is available:
+
+```bash
+gbrain put "safe-agentic/tasks/<goal-slug>" --content "<markdown summary>"
+```
+
+The saved summary should include the goal, task-card path, critical path, major dependencies, and validation gates. Do not save secrets, credentials, raw user payloads, private keys, sensitive PII, or large code dumps. The project-local `agents/` artifact remains the source of truth.
+
 ## Operating Rules
 
 - Preserve the user's strategic intent before optimizing the work breakdown.

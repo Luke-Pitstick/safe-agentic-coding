@@ -11,6 +11,26 @@ Turn a small prompt into one narrow, delegate-ready implementation brief. The ou
 
 This skill does not implement the task and does not spawn subagents. It writes the final brief to the current workspace's `agents/` folder for use by `$delegate-agent-tasks` or another follow-up skill.
 
+## Optional GStack and GBrain Compatibility
+
+Use GStack and gbrain as optional memory, never as a required dependency.
+
+Before writing the brief, if `gbrain` is on PATH:
+
+- Extract 2-4 concrete keywords from the prompt and likely app area.
+- Run `gbrain search "<keywords>"`.
+- Read at most the top 3 clearly relevant pages with `gbrain get_page "<slug>"`.
+- Use memory only to ground app fit, prior decisions, existing risks, or known conventions.
+- If `gbrain` is unavailable, returns an error, or has no useful hits, continue from local workspace files.
+
+After writing the brief, save a compact summary when `gbrain` is available:
+
+```bash
+gbrain put "safe-agentic/briefs/<task-slug>" --content "<markdown summary>"
+```
+
+The saved summary should include the brief path, narrow scope, likely files, acceptance criteria, and validation plan. Do not save secrets, credentials, raw user payloads, private keys, sensitive PII, or large code dumps. The project-local `agents/` artifact remains the source of truth.
+
 ## Operating Rules
 
 - Keep the scope narrow. Shape one coherent task, not an epic.

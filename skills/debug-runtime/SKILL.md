@@ -11,6 +11,26 @@ Use this skill for bugs where static inspection is not enough. The workflow is e
 
 Pair with `$write-tests` when a regression test or characterization test can lock in the fix. Pair with `$simplify-code` only after the root cause is understood and the bug is caused by confusing structure.
 
+## Optional GStack and GBrain Compatibility
+
+Use GStack and gbrain as optional memory, never as a required dependency.
+
+Before debugging, if `gbrain` is on PATH:
+
+- Extract 2-4 concrete keywords from the bug, error text, failing command, file path, or feature area.
+- Run `gbrain search "<keywords>"`.
+- Read at most the top 3 clearly relevant pages with `gbrain get_page "<slug>"`.
+- Use memory only for prior bug history, known fragile areas, previous fixes, or reproduction clues.
+- If `gbrain` is unavailable, returns an error, or has no useful hits, continue from local code, logs, and reproduction steps.
+
+After the bug is fixed and temporary instrumentation is removed, save a compact root-cause summary when `gbrain` is available:
+
+```bash
+gbrain put "safe-agentic/debug/<bug-slug>" --content "<markdown summary>"
+```
+
+The saved summary should include the bug, root cause, evidence, fix path, validation, and remaining risk. Do not save secrets, credentials, raw user payloads, private keys, sensitive PII, full logs, or temporary instrumentation dumps. The local debug artifact and final diff remain the source of truth.
+
 ## Operating Rules
 
 - Prefer runtime evidence over model guesses.
