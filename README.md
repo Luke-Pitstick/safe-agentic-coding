@@ -45,6 +45,7 @@ load when the skill matches a task.
 | `update-gitignore`     | Audits a repo, updates `.gitignore`, and untracks already-tracked ignored files without deleting local copies.                                         |
 | `simplify-code`        | Analyzes code complexity and finds simpler behavior-preserving implementations, including library/API alternatives via `$deep-dive`.                   |
 | `tech-discovery`       | Researches technologies, libraries, APIs, open source projects, standards, datasets, and platforms that can bootstrap a project idea.                  |
+| `write-docstrings`     | Analyzes current code and writes docstrings in the format of the current language. Writes usage, parameters, and outputs.                              |
 
 ## Using `create-project`
 
