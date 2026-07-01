@@ -36,6 +36,7 @@ load when the skill matches a task.
 |------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `create-project`       | Existing project scaffold skill updated to create `agents/`, `docs/`, and an `AGENTS.md`                                                               |
 | `decompose-task`       | Splits high-level goals into agent-ready subtasks written to `agents/`, including context packets, dependencies, validation, and reuse/library checks. |
+| `derive-tests`         | Derives concrete first failing tests from a feature idea before implementation, including Given/When/Then, assertions, test location, and TDD order.   |
 | `delegate-agent-tasks` | Coordinates subagents to execute task cards, including code-writing permissions, validation gates, and regular commit checkpoints.                     |
 | `write-tests`          | Designs and writes robust unit, integration, regression, contract, and workflow tests.                                                                 |
 | `expand-task`          | Expands a simple prompt into a narrow, app-aware implementation brief for another agent.                                                               |

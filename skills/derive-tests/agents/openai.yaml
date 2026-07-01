@@ -1,0 +1,4 @@
+interface:
+  display_name: "Derive Tests"
+  short_description: "Derive concrete failing tests before implementation"
+  default_prompt: "Use $derive-tests to turn this feature into the first small concrete tests I should write before implementation code."
