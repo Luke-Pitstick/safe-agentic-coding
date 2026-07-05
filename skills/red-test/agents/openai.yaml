@@ -1,0 +1,4 @@
+interface:
+  display_name: "Red Test"
+  short_description: "Write one focused failing test"
+  default_prompt: "Use $red-test to write one highly scoped failing test for this behavior before implementation."

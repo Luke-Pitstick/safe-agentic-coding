@@ -1,0 +1,4 @@
+interface:
+  display_name: "Refactor Implementation"
+  short_description: "Refactor after tests are green"
+  default_prompt: "Use $refactor-implementation to refactor the implementation while preserving the green test behavior."

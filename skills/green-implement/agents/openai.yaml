@@ -1,0 +1,4 @@
+interface:
+  display_name: "Green Implement"
+  short_description: "Write minimal code to pass one red test"
+  default_prompt: "Use $green-implement to make the smallest implementation change needed to pass the current red test."
